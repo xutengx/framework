@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="<?php echo url('App/Dev/view/view/js/test.js'); ?>"></script>
+        <script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>
+        <script>
+            // 设置语言
+            $.extend({
+                language_json: {
+                    "文件服务地址": [
+                        "文件服务地址22",
+                        "File System Service Address22"
+                    ],
+                    "今日流水": [
+                        "今日流水",
+                        "Daily"
+                    ],
+                    "本周流水": [
+                        "本周流水",
+                        "Weekly"
+                    ],
+                    "本月流水": [
+                        "本月流水",
+                        "Monthly"
+                    ],
+                    "中文": [
+                        "中文",
+                        "ENGLISH"
+                    ]
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div><script>$.lw(['测试','test']);</script><?php echo '控制器赋值到页面php : '.$test; ?></div>
+        <form action="action">
+            <input type="text" id='date' name="tt" />
+            <input type="file" name="rr" />
+            <input type="file" name="yy" />
+            <input id="submit" type="button" value="ok!">
+        </form>
+        <script>
+            String.prototype.gblen = function() { 
+  var len = 0; 
+  for (var i=0; i<this.length; i++) { 
+    if (this.charCodeAt(i)>127 || this.charCodeAt(i)==94) { 
+       len += 2; 
+     } else { 
+       len ++; 
+     } 
+   } 
+  return len; 
+}
+            
+            // 用string替代int
+            var data = {
+                    'name':'xutengh回回千位',
+                    'age':'22',
+                    'email':'123123@qq.com'
+                };
+            var makeSign = function (data){
+                // api接口获取,并有时效性,
+var token = 'QhpYXENcCQRUTRQDVFdcWxtfGwhSUwIBBlUFAFdwEkQXW15VQ0oaRAUSRRFdFA8VHVdAHVRUF1VnEQ5pEgggdmB3ZX5TE19_NTJlMEwDWQFzVFRSMlJ3BwwSW0oXUS15SAFIZE4PfA0IBnsFWBQZFUoRWE0QFxELBEoUVQRDF2pVV1ZRDzlRREZbBVQKBAcDD1ALAElGX1BGEmlVClcKW2ZZRRpbRAoEVVYbVgEbBwQZVAwDUVQJAQVEGhsGQgZUTV1VZwASGg5GUwZXDhsFDxRXChlUVQkCAlwGDEccQUBJXFBMBAJnVRBDDEQLBgQAFFUBFFdXEwAAXAUOXwFTFxUaRVcKA1ZrFxVXFE1pQV5UABsDVFEDAgFRAglVAB4';    
+                // 双方约定
+                var key = 'yh';         
+                //排序的函数
+                var objKeySort = function (obj) {
+                    var newkey = Object.keys(obj).sort();
+                    var newObj = {};
+                    for (var i = 0; i < newkey.length; i++) {
+                        newObj[newkey[i]] = obj[newkey[i]];
+                    }
+                    return newObj;
+                };
+                data = objKeySort(data);
+                data.timestamp = Date.parse(new Date())/1000; 
+                data.token = token;
+                var str = JSON.stringify(data);
+                console.log(str);
+                console.log(str.gblen());
+                console.log(md5(str));
+                console.log((md5(str) + key));
+                console.log(md5(md5(str) + key));
+                data.sign = md5(md5(str) + key);
+                return data;
+
+            };
+            $.ajax({
+//                url:$.url('user/token'),
+                url:'http://gaara.com/user/reg',
+//                url:'http://121.196.222.40/yh/user/login',
+                type:'post',
+                data:makeSign(data),
+                success:function(re){
+                    
+                }
+            });
+            
+            $('#submit').submitData('view/ajax?testp=1',function(re){
+                console.log(re);
+            },'post');
+            
+            console.log('控制器赋值到页面js : '+ test);
+            $.set_language_json({
+                'test':['test cn','test en']
+            });
+            console.log($.url('test',{'name':'xt','age':12}));
+            console.log($.url('test',{}));
+
+        </script>
+    </body>
+</html>
